@@ -1,6 +1,6 @@
 'use strict'; 
 
-const mysql = require('mysql2')
+const mysql = require('mysql2/promise')
 require('dotenv').config();
 
 const config_db = mysql.createPool({
@@ -19,10 +19,6 @@ config_db.getConnection((err,connection) => {
         console.log('Conectado ao banco com sucesso!')
         connection.release();
     }
-}
-
-
-
-)
+})
 
 module.exports = config_db; 
