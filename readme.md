@@ -1,3 +1,4 @@
+
 # 🚀 Backend Node.js - Projeto Mobile Offline-First
 
 Este é o servidor backend desenvolvido para a disciplina de **Desenvolvimento para Dispositivos Móveis** (PI IV). [cite_start]O foco deste projeto é implementar uma arquitetura **Offline-First**, onde o aplicativo mobile utiliza um banco de dados local para operação constante e esta API para sincronização[cite: 8, 9, 157].
