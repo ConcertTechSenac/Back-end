@@ -6,7 +6,6 @@ class AuthController {
     try {
       const { nome, email, senha, telefone } = req.body;
 
-      // Validar se os campos obrigatórios foram enviados
       if (!nome || !email || !senha) {
         return res.status(400).json({
           success: false,
@@ -24,12 +23,10 @@ class AuthController {
     }
   }
 
-  // ============ VERIFICAR CÓDIGO ============
   async verificarCodigo(req, res) {
     try {
       const { email, otp } = req.body;
 
-      // Validar se os campos foram enviados
       if (!email || !otp) {
         return res.status(400).json({
           success: false,
@@ -47,12 +44,10 @@ class AuthController {
     }
   }
 
-  // ============ LOGIN ============
   async login(req, res) {
     try {
       const { email, senha } = req.body;
 
-      // Validar se os campos foram enviados
       if (!email || !senha) {
         return res.status(400).json({
           success: false,
@@ -70,7 +65,6 @@ class AuthController {
     }
   }
 
-  
   async obterPerfil(req, res) {
     try {
       const userId = req.userId; 
@@ -93,10 +87,73 @@ class AuthController {
 
       res.status(200).json({
         success: true,
-        usuario: usuario.toJSON(),
+        usuario: usuario.toJSON ? usuario.toJSON() : usuario, // Garante que não quebre se toJSON não existir
       });
     } catch (error) {
       res.status(500).json({
+        success: false,
+        erro: error.message,
+      });
+    }
+  }
+
+  async listarTodos(req, res) {
+    try {
+      const usuarios = await AuthCadastroLoginService.listarTodos();
+      
+      res.status(200).json({
+        success: true,
+        usuarios: usuarios
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        erro: error.message,
+      });
+    }
+  }
+
+  async atualizarPerfil(req, res) {
+    try {
+      const userId = req.userId; 
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          erro: 'Usuário não autenticado',
+        });
+      }
+
+      const { nome, telefone, foto_perfil } = req.body;
+      const dadosAtualizados = { nome, telefone, foto_perfil };
+
+      const resultado = await AuthCadastroLoginService.atualizar(userId, dadosAtualizados);
+      
+      res.status(200).json(resultado);
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        erro: error.message,
+      });
+    }
+  }
+
+  async deletarUsuario(req, res) {
+    try {
+      const idParaDeletar = req.params.id || req.userId;
+
+      if (!idParaDeletar) {
+        return res.status(400).json({
+          success: false,
+          erro: 'ID do usuário não fornecido',
+        });
+      }
+
+      const resultado = await AuthCadastroLoginService.deletar(idParaDeletar);
+      
+      res.status(200).json(resultado);
+    } catch (error) {
+      res.status(400).json({
         success: false,
         erro: error.message,
       });

@@ -3,9 +3,14 @@ const AuthCadastroLoginController = require('../controllers/authCadastroLoginCon
 
 const router = express.Router();
 
-router.post('/signup', (req, res) => AuthCadastroLoginController.signup(req, res));
-router.post('/login', (req, res) => AuthCadastroLoginController.login(req, res));
-router.post('/verificar-codigo', (req, res) => AuthCadastroLoginController.verificarCodigo(req, res));
-router.get('/perfil', (req, res) => AuthCadastroLoginController.obterPerfil(req, res));
+router.post('/signup', AuthCadastroLoginController.signup);
+router.post('/login', AuthCadastroLoginController.login);
+router.post('/verificar-codigo', AuthCadastroLoginController.verificarCodigo);
+
+
+router.get('/perfil', AuthCadastroLoginController.obterPerfil);
+router.get('/usuarios', AuthCadastroLoginController.listarTodos);
+router.put('/perfil', AuthCadastroLoginController.atualizarPerfil);
+router.delete('/usuarios/:id', AuthCadastroLoginController.deletarUsuario);
 
 module.exports = router;

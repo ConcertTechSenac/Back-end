@@ -38,6 +38,80 @@ class AuthCadastroLoginService {
         }   
     } 
 
+    static async listarTodos() {
+        try {
+            const connection = await pool.getConnection(); 
+
+            const[usuarios] = await connection.query(
+                'Select * from usuarios'
+            );
+
+            connection.release(); 
+
+            return usuarios;
+        } catch (error) {
+            console.log("Erro ao listar usuarios", error);
+            throw error;
+        }
+    } 
+     
+    static async deletar(id) {
+        try {
+            const connection = await pool.getConnection();
+            const [result] = await connection.query('DELETE FROM usuarios WHERE id = ?', [id]);
+            connection.release();
+
+            if (result.affectedRows === 0) {
+                throw new Error('Usuário não encontrado.');
+            }
+
+            return {
+                success: true,
+                message: 'Usuário deletado com sucesso!'
+            };
+        } catch (error) {
+            console.error('Erro ao deletar usuário:', error);
+            throw error;
+        }
+    }
+
+
+    static async atualizar(id, dadosAtualizados) {
+        try {
+            const { nome, telefone, foto_perfil } = dadosAtualizados;
+            
+            const connection = await pool.getConnection();
+            const [result] = await connection.query(
+                `UPDATE usuarios 
+                 SET nome = COALESCE(?, nome), 
+                     telefone = COALESCE(?, telefone), 
+                     foto_perfil = COALESCE(?, foto_perfil), 
+                     data_atualizacao = NOW() 
+                 WHERE id = ?`,
+                [nome, telefone, foto_perfil, id]
+            );
+            connection.release();
+
+            if (result.affectedRows === 0) {
+                throw new Error('Usuário não encontrado ou nenhuma alteração foi feita.');
+            }
+
+            return {
+                success: true,
+                message: 'Dados do usuário atualizados com sucesso!'
+            };
+        } catch (error) {
+            console.error('Erro ao atualizar usuário:', error);
+            throw error;
+        }
+    }
+
+
+
+    
+
+    
+
     static async buscarPorId(id){
         try{ 
             const connection = await pool.getConnection();
