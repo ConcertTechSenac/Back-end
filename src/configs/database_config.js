@@ -1,6 +1,6 @@
 'use strict';
 require('dotenv').config();
-
+console.log("USER:", process.env.DB_USER);
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
