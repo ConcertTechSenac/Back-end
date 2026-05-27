@@ -23,8 +23,8 @@ class UserModel {
     this.tokenVerificacao = token_verificacao;
     this.dataCriacao = data_criacao;
     this.dataAtualizacao = data_atualizacao;
-} 
-}   
+}
+}
 
 
 
