@@ -23,6 +23,12 @@ class ProdutoService {
     return ProdutoModel.atualizar(id, dados);
   }
 
+  async atualizarEstoque(id, delta) {
+    if (delta === 0) throw new Error('Delta não pode ser zero');
+    await this.buscarPorId(id);
+    return ProdutoModel.atualizarEstoque(id, delta);
+  }
+
   async toggleDestaque(id) {
     await this.buscarPorId(id);
     return ProdutoModel.toggleDestaque(id);

@@ -11,6 +11,7 @@ router.post('/',   ProdutoController.criar.bind(ProdutoController));
 router.get('/:id',              ProdutoController.buscarPorId.bind(ProdutoController));
 router.put('/:id',              ProdutoController.atualizar.bind(ProdutoController));
 router.patch('/:id/destaque',   ProdutoController.toggleDestaque.bind(ProdutoController));
+router.patch('/:id/estoque',    ProdutoController.atualizarEstoque.bind(ProdutoController));
 router.delete('/:id',           ProdutoController.deletar.bind(ProdutoController));
 
 module.exports = router;

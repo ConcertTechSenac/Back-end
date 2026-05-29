@@ -49,12 +49,6 @@ class ProdutoModel {
     const campos = [];
     const valores = [];
 
-    const mapa = {
-      nome, nomeShort: 'nome_short', descricao,
-      preco, precoOriginal: 'preco_original', categoria,
-      avaliacao, avaliacoes, estoque, imagem, cor, destaque,
-    };
-
     // Constrói SET dinâmico apenas com campos enviados
     const colunasDB = {
       nome: 'nome', nomeShort: 'nome_short', descricao: 'descricao',
@@ -74,6 +68,15 @@ class ProdutoModel {
 
     valores.push(id);
     await pool.query(`UPDATE produtos SET ${campos.join(', ')} WHERE id = ?`, valores);
+    return ProdutoModel.buscarPorId(id);
+  }
+
+  static async atualizarEstoque(id, delta) {
+    // delta positivo = adicionar; negativo = subtrair (não deixa ficar abaixo de 0)
+    await pool.query(
+      'UPDATE produtos SET estoque = GREATEST(0, estoque + ?) WHERE id = ?',
+      [delta, id]
+    );
     return ProdutoModel.buscarPorId(id);
   }
 

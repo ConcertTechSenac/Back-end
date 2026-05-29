@@ -37,6 +37,19 @@ class ProdutoController {
     }
   }
 
+  async atualizarEstoque(req, res) {
+    try {
+      const { delta } = req.body;
+      if (delta === undefined || isNaN(Number(delta))) {
+        return res.status(400).json({ success: false, erro: 'Campo "delta" numérico é obrigatório' });
+      }
+      const produto = await ProdutoService.atualizarEstoque(req.params.id, Number(delta));
+      res.json({ success: true, produto });
+    } catch (err) {
+      res.status(400).json({ success: false, erro: err.message });
+    }
+  }
+
   async toggleDestaque(req, res) {
     try {
       const produto = await ProdutoService.toggleDestaque(req.params.id);
