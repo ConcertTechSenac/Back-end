@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.use("/api/auth", authRoutes);
 
 // Rotas do chatbot
 app.use("/api", chatRoutes);
+
+// Rotas do carrinho
+app.use("/api/cart", cartRoutes);
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Servidor na porta ${PORT}`);
