@@ -18,7 +18,7 @@ Este é o servidor backend desenvolvido para a disciplina de **Desenvolvimento p
 Antes de começar, você precisará ter instalado:
 1. [cite_start]**Node.js** [cite: 87, 116]
 2. **Git** para versionamento.
-
+3. Criar o arquivo .env na raíz do projeto (mesmo diretorio do package.json), as informações a serem colocadas no arquivo .env estão localizadas na documentação enviada.
 ## 🚀 Instalação e Execução
 
 ### 1. Clonar o Repositório
