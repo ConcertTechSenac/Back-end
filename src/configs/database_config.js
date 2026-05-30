@@ -95,16 +95,24 @@ const inicializarBanco = async () => {
     await connection.query(CREATE_TABLE_PRODUTOS);
     console.log('✅ Tabela "produtos" verificada/criada com sucesso!');
 
-    // Admin padrão
+    // Admin padrão — usuário "admin" / senha "admin"
+    const senhaHashAdmin = await bcrypt.hash("admin", 10);
     const [admins] = await connection.query(
-      "SELECT id FROM admins WHERE usuario = ?", ["adm"]
+      "SELECT id FROM admins WHERE usuario = ?", ["admin"]
     );
     if (admins.length === 0) {
-      const senhaHash = await bcrypt.hash("adm", 10);
-      await connection.query("INSERT INTO admins (usuario, senha) VALUES (?, ?)", ["adm", senhaHash]);
-      console.log('✅ Admin padrão criado: usuário "adm" / senha "adm"');
+      await connection.query(
+        "INSERT INTO admins (usuario, senha) VALUES (?, ?)",
+        ["admin", senhaHashAdmin]
+      );
+      console.log('✅ Admin padrão criado: usuário "admin" / senha "admin"');
     } else {
-      console.log("✅ Admin padrão já existe.");
+      // Garante que a senha esteja sincronizada como "admin"
+      await connection.query(
+        "UPDATE admins SET senha = ? WHERE usuario = ?",
+        [senhaHashAdmin, "admin"]
+      );
+      console.log('✅ Admin padrão "admin" verificado/atualizado.');
     }
 
     // Seed de produtos (só roda se a tabela estiver vazia)
